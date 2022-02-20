@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="please_validate_data">Por favor valida los datos ingresados</string>
+    <string name="sorry_we_have_problems">Lo sentimos, estamos teniendo problemas con nuestros servicios. los repararemos lo mas pronto posible</string>
+    <string name="unexpected_error">Ups, tenemos un problema. por favor comunicate con nuestra linea de soporte</string>
+</resources>
