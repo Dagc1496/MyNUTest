@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f0fdc019782b573bd1db3081efc16ed0",
+    "entities": [
+      {
+        "tableName": "urlShortened_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alias` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `self` TEXT NOT NULL, `short` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "alias",
+            "columnName": "alias",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "links.self",
+            "columnName": "self",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "links.short",
+            "columnName": "short",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f0fdc019782b573bd1db3081efc16ed0')"
+    ]
+  }
+}
