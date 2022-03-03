@@ -1,7 +1,10 @@
-package com.example.mynutest.urlShortener.data.remote.network
+package com.example.mynutest.urlShortener.data.remote.service
 
+import com.example.mynutest.urlShortener.data.database.dao.UrlShortenedDao
 import com.example.mynutest.urlShortener.data.remote.mapToDomain
 import com.example.mynutest.urlShortener.data.remote.mapToDto
+import com.example.mynutest.urlShortener.data.remote.mapToEntity
+import com.example.mynutest.urlShortener.data.remote.network.UrlShortenerApiClient
 import com.example.mynutest.urlShortener.domain.model.Url
 import com.example.mynutest.urlShortener.domain.model.UrlShortened
 import kotlinx.coroutines.flow.Flow
@@ -9,11 +12,15 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class UrlShortenerService @Inject constructor(private val apiClient: UrlShortenerApiClient) {
+class UrlShortenerService @Inject constructor(
+    private val apiClient: UrlShortenerApiClient,
+    private val urlShortenedDao : UrlShortenedDao
+    ) {
 
     fun fetchUrlShorted(url: Url) : Flow<Result<UrlShortened>> {
         return flow{
             val response = apiClient.fetchUrlShorted(url.mapToDto())
+            urlShortenedDao.insert(response.mapToEntity())
             val result = Result.success(response.mapToDomain())
             emit(result)
         }.catch { exception ->

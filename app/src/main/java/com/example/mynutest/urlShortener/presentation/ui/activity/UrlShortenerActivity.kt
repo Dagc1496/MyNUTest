@@ -15,6 +15,7 @@ import com.example.mynutest.databinding.ActivityUrlShortenerBinding
 import com.example.mynutest.urlShortener.domain.model.Url
 import com.example.mynutest.urlShortener.domain.model.UrlShortened
 import com.example.mynutest.urlShortener.presentation.ui.adapter.UrlShortenedAdapter
+import com.example.mynutest.urlShortener.presentation.viewModel.UrlShortenedListViewModel
 import com.example.mynutest.urlShortener.presentation.viewModel.UrlShortenerViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,8 +26,9 @@ import kotlinx.coroutines.flow.collect
 class UrlShortenerActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityUrlShortenerBinding
-    private var urlShortenedList = mutableListOf<UrlShortened>()
+    private var urlShortenedList = listOf<UrlShortened>()
     private val urlShortenerViewModel: UrlShortenerViewModel by viewModels()
+    private val urlShortenerListViewModel: UrlShortenedListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,14 @@ class UrlShortenerActivity : AppCompatActivity() {
             }
         }
 
+        fetchShortenedList()
+
+        lifecycleScope.launchWhenStarted {
+            urlShortenerListViewModel.loader.collect {
+                setLoadingState(it)
+            }
+        }
+
         binding.buttonShorUrl.setOnClickListener {
             val url:String = binding.editTextUri.text.toString()
             hideKeyboard(it)
@@ -47,14 +57,27 @@ class UrlShortenerActivity : AppCompatActivity() {
         }
     }
 
+    private fun fetchShortenedList(){
+        urlShortenerListViewModel.fetchShortenedUrlList().observe(this){ it ->
+            it.fold(
+                onSuccess = {
+                    urlShortenedList = it
+                    setupList()
+                },
+                onFailure = {
+                    showSnackbar(getErrorMessage(it).ifBlank { resources.getString(R.string.try_again) })
+                }
+            )
+        }
+    }
+
     private fun fetchShortedUrl(urlText: String){
         val url = Url(urlText)
         urlShortenerViewModel.fetchShortenedUrl(url).observe(this){ it ->
             it.fold(
                 onSuccess = {
-                    urlShortenedList.add(it)
                     binding.editTextUri.text.clear()
-                    setupList()
+                    fetchShortenedList()
                 },
                 onFailure = {
                     showSnackbar(getErrorMessage(it).ifBlank { resources.getString(R.string.try_again) })

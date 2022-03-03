@@ -5,5 +5,8 @@ import com.example.mynutest.urlShortener.domain.model.UrlShortened
 import kotlinx.coroutines.flow.Flow
 
 interface IUrlShortenerRepository {
-    fun fetchShortenedUrl(url: Url): Flow<Result<UrlShortened>>
+
+    fun fetchShortenedUrlFromApi(url: Url): Flow<Result<UrlShortened>>
+
+    fun fetchShortenedUrlsFromDatabase(): Flow<Result<List<UrlShortened>>>
 }

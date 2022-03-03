@@ -1,4 +1,4 @@
-package com.example.mynutest.di.provider
+package com.example.mynutest.di.provider.urlShortener
 
 import com.example.mynutest.BuildConfig
 import com.example.mynutest.urlShortener.data.remote.network.UrlShortenerApiClient
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object UrlShortenerModule {
+object NetworkModule {
 
     @Provides
     fun provideUrlShortenerApiClient(retrofit: Retrofit): UrlShortenerApiClient {

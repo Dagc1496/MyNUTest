@@ -1,9 +1,11 @@
 package com.example.mynutest.urlShortener.data.remote.network
 
 import com.example.mynutest.common.exception.IllegalEntryStateArgument
+import com.example.mynutest.urlShortener.data.database.dao.UrlShortenedDao
 import com.example.mynutest.urlShortener.data.remote.dto.LinksResponse
 import com.example.mynutest.urlShortener.data.remote.dto.UrlRequest
 import com.example.mynutest.urlShortener.data.remote.dto.UrlShortenedResponse
+import com.example.mynutest.urlShortener.data.remote.service.UrlShortenerService
 import com.example.mynutest.urlShortener.domain.model.Links
 import com.example.mynutest.urlShortener.domain.model.Url
 import com.example.mynutest.urlShortener.domain.model.UrlShortened
@@ -18,8 +20,9 @@ import org.junit.Test
 class UrlShortenerServiceTest {
 
     private val apiclient = mock<UrlShortenerApiClient>()
+    private val urlShortenerDao = mock<UrlShortenedDao>()
 
-    private val service = UrlShortenerService(apiclient)
+    private val service = UrlShortenerService(apiclient, urlShortenerDao)
 
     private val urlRequest = UrlRequest("Testing")
     private val url = Url("Testing")

@@ -33,14 +33,14 @@ class UrlShortenerUseCaseTest {
         urlShortenerUseCase.invoke(urlSuccess)
 
         //Assert
-        verify(repository, times(1)).fetchShortenedUrl(urlSuccess)
+        verify(repository, times(1)).fetchShortenedUrlFromApi(urlSuccess)
     }
 
     @Test
     fun fetchingShortedUrlSuccess() = runBlockingTest {
 
         //Arrange
-        whenever(repository.fetchShortenedUrl(urlSuccess)).thenReturn(
+        whenever(repository.fetchShortenedUrlFromApi(urlSuccess)).thenReturn(
             flow {
                 emit(expectedSuccess)
             }
@@ -57,7 +57,7 @@ class UrlShortenerUseCaseTest {
     fun fetchingShortedUrlError() = runBlockingTest {
 
         //Arrange
-        whenever(repository.fetchShortenedUrl(urlError)).thenReturn(
+        whenever(repository.fetchShortenedUrlFromApi(urlError)).thenReturn(
             flow {
                 emit(expectedError)
             }

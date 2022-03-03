@@ -9,6 +9,6 @@ import javax.inject.Inject
 class UrlShortenerUseCase @Inject constructor(private val urlShortenerRepository: IUrlShortenerRepository) {
 
      operator fun invoke(url: Url): Flow<Result<UrlShortened>> =
-        urlShortenerRepository.fetchShortenedUrl(url)
+        urlShortenerRepository.fetchShortenedUrlFromApi(url)
 
 }
